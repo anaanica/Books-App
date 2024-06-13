@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Apartments.Genre>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+    &nbsp;
+    @Html.ActionLink("View Books", "Index", "Book")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IdGenre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GenreName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdGenre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GenreName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.IdGenre }) |
+            @Html.ActionLink("Details", "Details", new { id = item.IdGenre }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.IdGenre })
+        </td>
+    </tr>
+}
+
+</table>

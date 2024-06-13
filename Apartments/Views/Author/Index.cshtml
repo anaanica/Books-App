@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Apartments.Author>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+    &nbsp;
+    @Html.ActionLink("View Books", "Index", "Book")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IdAuthor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AuthorName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdAuthor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AuthorName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.IdAuthor }) |
+            @Html.ActionLink("Details", "Details", new { id = item.IdAuthor }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.IdAuthor })
+        </td>
+    </tr>
+}
+
+</table>

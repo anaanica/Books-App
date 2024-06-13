@@ -1,0 +1,55 @@
+﻿@model Apartments.Book
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Book</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IdBook)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdBook)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Isbn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Isbn)
+        </dd>
+
+        @foreach (var uploadedFile in Model.UploadedFiles)
+        {
+            <dt>
+                @uploadedFile.Name
+            </dt>
+
+            <dd style="margin-top:10px">
+                <img src="~/File?id=@uploadedFile.IdUploadedFile" alt="Picture"
+                     width="300"
+                     height="200" />
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IdBook }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

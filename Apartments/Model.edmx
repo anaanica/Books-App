@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="Books" EntityType="Model.Store.Books" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UploadedFiles" EntityType="Model.Store.UploadedFiles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Authors" EntityType="Model.Store.Authors" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Genres" EntityType="Model.Store.Genres" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="BookAuthor" EntityType="Model.Store.BookAuthor" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="BookGenre" EntityType="Model.Store.BookGenre" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="BookUploadedFile" Association="Model.Store.BookUploadedFile">
+      <End Role="Book" EntitySet="Books" />
+      <End Role="UploadedFile" EntitySet="UploadedFiles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BookAuthor_Book" Association="Model.Store.FK_BookAuthor_Book">
+      <End Role="Book" EntitySet="Books" />
+      <End Role="BookAuthor" EntitySet="BookAuthor" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BookAuthor_Author" Association="Model.Store.FK_BookAuthor_Author">
+      <End Role="Author" EntitySet="Authors" />
+      <End Role="BookAuthor" EntitySet="BookAuthor" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BookGenre_Book" Association="Model.Store.FK_BookGenre_Book">
+      <End Role="Book" EntitySet="Books" />
+      <End Role="BookGenre" EntitySet="BookGenre" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BookGenre_Genre" Association="Model.Store.FK_BookGenre_Genre">
+      <End Role="Genre" EntitySet="Genres" />
+      <End Role="BookGenre" EntitySet="BookGenre" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="IdBook" />
+    </Key>
+    <Property Name="IdBook" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Isbn" Type="nvarchar" Nullable="false" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="UploadedFiles">
+    <Key>
+      <PropertyRef Name="IdUploadedFile" />
+    </Key>
+    <Property Name="IdUploadedFile" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="ContentType" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Content" Type="varbinary(max)" Nullable="false" />
+    <Property Name="BookIdBook" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Authors">
+    <Key>
+      <PropertyRef Name="IdAuthor" />
+    </Key>
+    <Property Name="IdAuthor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AuthorName" Type="nvarchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Genres">
+    <Key>
+      <PropertyRef Name="IdGenre" />
+    </Key>
+    <Property Name="IdGenre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GenreName" Type="nvarchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="BookAuthor">
+    <Key>
+      <PropertyRef Name="Books_IdBook" />
+      <PropertyRef Name="Authors_IdAuthor" />
+    </Key>
+    <Property Name="Books_IdBook" Type="int" Nullable="false" />
+    <Property Name="Authors_IdAuthor" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BookGenre">
+    <Key>
+      <PropertyRef Name="Books_IdBook" />
+      <PropertyRef Name="Genres_IdGenre" />
+    </Key>
+    <Property Name="Books_IdBook" Type="int" Nullable="false" />
+    <Property Name="Genres_IdGenre" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="BookUploadedFile">
+    <End Role="Book" Type="Model.Store.Books" Multiplicity="1" />
+    <End Role="UploadedFile" Type="Model.Store.UploadedFiles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="IdBook" />
+      </Principal>
+      <Dependent Role="UploadedFile">
+        <PropertyRef Name="BookIdBook" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BookAuthor_Book">
+    <End Role="Book" Type="Model.Store.Books" Multiplicity="1" />
+    <End Role="BookAuthor" Type="Model.Store.BookAuthor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="IdBook" />
+      </Principal>
+      <Dependent Role="BookAuthor">
+        <PropertyRef Name="Books_IdBook" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BookAuthor_Author">
+    <End Role="BookAuthor" Type="Model.Store.BookAuthor" Multiplicity="*" />
+    <End Role="Author" Type="Model.Store.Authors" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Author">
+        <PropertyRef Name="IdAuthor" />
+      </Principal>
+      <Dependent Role="BookAuthor">
+        <PropertyRef Name="Authors_IdAuthor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BookGenre_Book">
+    <End Role="Book" Type="Model.Store.Books" Multiplicity="1" />
+    <End Role="BookGenre" Type="Model.Store.BookGenre" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="IdBook" />
+      </Principal>
+      <Dependent Role="BookGenre">
+        <PropertyRef Name="Books_IdBook" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BookGenre_Genre">
+    <End Role="BookGenre" Type="Model.Store.BookGenre" Multiplicity="*" />
+    <End Role="Genre" Type="Model.Store.Genres" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Genre">
+        <PropertyRef Name="IdGenre" />
+      </Principal>
+      <Dependent Role="BookGenre">
+        <PropertyRef Name="Genres_IdGenre" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Books" EntityType="Model.Book" />
+          <EntitySet Name="UploadedFiles" EntityType="Model.UploadedFile" />
+          <AssociationSet Name="BookUploadedFile" Association="Model.BookUploadedFile">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="UploadedFile" EntitySet="UploadedFiles" />
+          </AssociationSet>
+          <EntitySet Name="Authors" EntityType="Model.Author" />
+          <AssociationSet Name="BookAuthor" Association="Model.BookAuthor">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Author" EntitySet="Authors" />
+          </AssociationSet>
+          <EntitySet Name="Genres" EntityType="Model.Genre" />
+          <AssociationSet Name="BookGenre" Association="Model.BookGenre">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Genre" EntitySet="Genres" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="IdBook" />
+          </Key>
+          <Property Name="IdBook" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="255" />
+          <Property Name="Isbn" Type="String" Nullable="false" MaxLength="20" />
+          <NavigationProperty Name="UploadedFiles" Relationship="Model.BookUploadedFile" FromRole="Book" ToRole="UploadedFile" />
+          <NavigationProperty Name="Authors" Relationship="Model.BookAuthor" FromRole="Book" ToRole="Author" />
+          <NavigationProperty Name="Genres" Relationship="Model.BookGenre" FromRole="Book" ToRole="Genre" />
+        </EntityType>
+        <EntityType Name="UploadedFile">
+          <Key>
+            <PropertyRef Name="IdUploadedFile" />
+          </Key>
+          <Property Name="IdUploadedFile" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="ContentType" Type="String" Nullable="false" MaxLength="20" />
+          <Property Name="Content" Type="Binary" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="Model.BookUploadedFile" FromRole="UploadedFile" ToRole="Book" />
+          <Property Name="BookIdBook" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="BookUploadedFile">
+          <End Type="Model.Book" Role="Book" Multiplicity="1" />
+          <End Type="Model.UploadedFile" Role="UploadedFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="IdBook" />
+            </Principal>
+            <Dependent Role="UploadedFile">
+              <PropertyRef Name="BookIdBook" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="IdAuthor" />
+          </Key>
+          <Property Name="IdAuthor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorName" Type="String" Nullable="false" MaxLength="100" />
+          <NavigationProperty Name="Books" Relationship="Model.BookAuthor" FromRole="Author" ToRole="Book" />
+        </EntityType>
+        <Association Name="BookAuthor">
+          <End Type="Model.Book" Role="Book" Multiplicity="*" />
+          <End Type="Model.Author" Role="Author" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="IdGenre" />
+          </Key>
+          <Property Name="IdGenre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GenreName" Type="String" Nullable="false" MaxLength="100" />
+          <NavigationProperty Name="Books" Relationship="Model.BookGenre" FromRole="Genre" ToRole="Book" />
+        </EntityType>
+        <Association Name="BookGenre">
+          <End Type="Model.Book" Role="Book" Multiplicity="*" />
+          <End Type="Model.Genre" Role="Genre" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="ModelContainer">
+    <EntitySetMapping Name="Books">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Book)">
+        <MappingFragment StoreEntitySet="Books">
+          <ScalarProperty Name="IdBook" ColumnName="IdBook" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Isbn" ColumnName="Isbn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UploadedFiles">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.UploadedFile)">
+        <MappingFragment StoreEntitySet="UploadedFiles">
+          <ScalarProperty Name="IdUploadedFile" ColumnName="IdUploadedFile" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="BookIdBook" ColumnName="BookIdBook" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Authors">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Author)">
+        <MappingFragment StoreEntitySet="Authors">
+          <ScalarProperty Name="IdAuthor" ColumnName="IdAuthor" />
+          <ScalarProperty Name="AuthorName" ColumnName="AuthorName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Genres">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Genre)">
+        <MappingFragment StoreEntitySet="Genres">
+          <ScalarProperty Name="IdGenre" ColumnName="IdGenre" />
+          <ScalarProperty Name="GenreName" ColumnName="GenreName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="BookAuthor" TypeName="Model.BookAuthor" StoreEntitySet="BookAuthor">
+      <EndProperty Name="Book">
+        <ScalarProperty Name="IdBook" ColumnName="Books_IdBook" />
+      </EndProperty>
+      <EndProperty Name="Author">
+        <ScalarProperty Name="IdAuthor" ColumnName="Authors_IdAuthor" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="BookGenre" TypeName="Model.BookGenre" StoreEntitySet="BookGenre">
+      <EndProperty Name="Book">
+        <ScalarProperty Name="IdBook" ColumnName="Books_IdBook" />
+      </EndProperty>
+      <EndProperty Name="Genre">
+        <ScalarProperty Name="IdGenre" ColumnName="Genres_IdGenre" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

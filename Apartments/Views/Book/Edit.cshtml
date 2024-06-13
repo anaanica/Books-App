@@ -1,0 +1,109 @@
+﻿@model Apartments.Book
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm(
+    "Edit", //action
+    "Book", //controller
+    null, //route values
+    FormMethod.Post,
+    new { enctype = "multipart/form-data" }
+    ))
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Book</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.IdBook, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.IdBook,
+           new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Isbn, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Isbn, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Isbn, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @foreach (var uploadedFile in Model.UploadedFiles)
+    {
+        <div class="form-group">
+
+            <span class="control-label col-md-2">
+
+                <strong>@uploadedFile.Name</strong> <br />
+
+                @Ajax.ActionLink(
+                    "Delete", // text
+                    "Delete", // action
+                    "File", // controller
+                    new { id = uploadedFile.IdUploadedFile },
+                    new AjaxOptions()
+                    {
+                        HttpMethod = "Post"
+                    }
+               )
+
+
+            </span>
+
+
+
+
+            <div class="col-md-10">
+                <img src="~/File?id=@uploadedFile.IdUploadedFile" alt="Picture"
+                     width="300"
+                     height="200" />
+            </div>
+
+        </div>
+
+
+
+    }
+
+    <div class="form-group">
+        @Html.Label("Picture", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+
+            <input type="file" id="Picture" multiple
+                   accept="image/*" name="files" />
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
